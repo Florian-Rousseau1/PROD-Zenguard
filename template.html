@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <mate charest="utf-8" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+  </head>
+  <body>
+    <h2>Résumé de la conversation du ticket</h2><br>
+    <br><br>
+    {{#each users}}
+      <div class="row">
+        <div class="col">
+            <p class="p-3 mb-2 rounded {{this.color}} text-white" style="width: 30%; opacity: 0.75; margin-left: 1%; letter-spacing: 2%;">{{this.idContrat}} : {{this.message}}</p>
+            <p class="p-6" style="text-align: right; width: 30%; margin-left: 1%;">{{this.timestamp_message}}</p>
+        </div>
+    </div>
+
+    {{/each}}
+
+  </body>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4" crossorigin="anonymous"></script>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+</html>

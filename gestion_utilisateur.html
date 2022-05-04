@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Affichage utilisateur - Mini Projet</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
+</head>
+<body>
+
+    <div class="card m-auto" style="width: 95%;">
+        <div class="card-body">
+            <form class="bg-white rounded shadow-5-strong p-5" method="POST" action="ajout">
+
+                <div class="row">
+
+                    <div class="col">
+                        <label class="form-label" for="name">Nom</label><br>
+                        <input class="form-control" type='text' id='name' name="name" placeholder='Nom'><br>
+                    </div>
+
+
+                    <div class="col">
+                        <label class="form-label" for="email">E-Mail</label><br>
+                        <input class="form-control" type='email' id='email' name="email" placeholder='Email'><br>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col">
+                        <label class="form-label" for="password">Mot de passe</label><br>
+                        <input class="form-control" type='password' id='password' name="password" placeholder='Mot de passe'><br>
+                    </div>
+
+                    <div class="col">
+                        <label class="form-label" for="description">Description</label><br>
+                        <textarea class="form-control" type='email' id='description' name="description" placeholder='Description'></textarea><br>
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-primary btn-block">Ajouter un utilisateur</button>
+            </form>
+        </div>
+    </div>
+
+    <div class="card m-auto mt-3" style="width: 95%;">
+        <div class="card-body">
+            <table class="table">
+                <thead class="thead-dark">
+                <tr>
+                    <th scope="col">ID</th>
+                    <th scope="col">NOM</th>
+                    <th scope="col">ADRESSE MAIL</th>
+                    <th scope="col">DESCRIPTION</th>
+                    <th scope="col">MODIFIER</th>
+                    <th scope="col">Supprimer</th>
+                </tr>
+                </thead>
+                <tbody id="tbody">
+
+                </tbody>
+            </table>
+
+        </div>
+    </div>
+
+    <div class="card m-auto mt-3" style="width: 95%; display: none;" id="modificationPart">
+        <div class="card-body">
+            <form class="bg-white rounded shadow-5-strong p-5" method="POST" action="modification">
+
+                <div class="row">
+                    <div class="col">
+                        <label class="form-label" for="modif_name">Nom</label><br>
+                        <input class="form-control" type='text' id='modif_name' name="modif_name" placeholder='Nom'><br>
+                    </div>
+
+                    <div class="col">
+                        <label class="form-label" for="modif_email">E-Mail</label><br>
+                        <input class="form-control" type='email' id='modif_email' name="modif_email" placeholder='Email'><br>
+                    </div>
+                </div>
+                <div class="row">
+
+                    <div class="col">
+                        <label class="form-label" for="modif_password">Mot de passe</label><br>
+                        <input class="form-control" type='password' id='modif_password' name="modif_password" placeholder='Mot de passe'><br>
+                    </div>
+
+                    <div class="col">
+                        <label class="form-label" for="description">Description</label><br>
+                        <textarea class="form-control" type='email' id='modif_description' name="modif_description" placeholder='Description'></textarea><br>
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-primary btn-block">Modifier l'utilisateur</button>
+            </form>
+        </div>
+    </div>
+
+
+
+
+
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+    <script type="text/javascript">
+
+
+
+
+    $(document).ready(
+        function(){
+
+
+            $.get("http://localhost:8080/getUsers", function(data){
+                console.log(data);
+                for (let i = 0; i < data.length; i++) {
+                    $("#tbody").append(
+                        "<tr>" +
+                            "<th scope='row'>"+data[i]._id+"</th>" +
+                            "<td>"+data[i].name+"</td>" +
+                            "<td>"+data[i].mail+"</td>" +
+                            "<td>"+data[i].description+"</td>" +
+                            "<td><button class='btn btn-primary button_modification' id='"+data[i]._id+"' type='submit'>Modification</button></td>" +
+                            "<td><button class='btn btn-danger button_suppression' id='"+data[i]._id+"' type='submit'>Supprimer</button></td>" +
+                        "</tr>"
+                    );
+                }
+            
+            
+                $(".button_modification").click(function(){
+                    $("#modificationPart").show();
+                    alert(this.id);
+
+                    $.get("http://localhost:8080/getUserById?id="+this.id, function(data){
+                        console.log("Test by ID : ");
+                        console.log(data);
+                        document.getElementById("modif_name").value = data.name;
+                        document.getElementById("modif_email").value = data.mail;
+                        document.getElementById("modif_password").value = data.password;
+                        document.getElementById("modif_description").value = data.description;
+                    })
+                })
+
+
+                $(".button_suppression").click(function(){
+                    $.post("http://localhost:8080/suppression", {id: this.id}, (err, data) => {
+
+                    })
+                })
+            })
+
+
+
+
+
+
+
+        }
+    )
+
+
+
+
+    </script>
+
+
+</body>
+</html>

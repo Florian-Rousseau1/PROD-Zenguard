@@ -1,0 +1,98 @@
+<html>
+
+<head>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
+    <title>Zenguard Connexion</title>
+    <meta charset="utf-8">
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+</head>
+
+<body>
+
+    <div class="d-flex flex-column align-items-center" style="margin-top: 25vh;">
+        <h1>Zenguard</h1>
+        <form class="bg-white rounded shadow-5-strong p-5">
+            <div id="firstPart_form">
+                <div>
+                    <label class="form-label" for="contratID">Votre numéro de contrat</label><br>
+                    <input class="form-control" type='text' id='contratID' name="contratID" placeholder='Votre numéro de contrat'><br>
+                </div>
+                <div>
+                    <label class="form-label" for="mail">Votre adresse mail</label><br>
+                    <input class="form-control" type='mail' id='mail' name="mail" placeholder='Votre adresse mail'><br>
+                </div>
+
+                <button type="button" class="btn btn-primary btn-block" id="tokenActivation">Demander l'authentification</button>
+            </div>
+
+
+            <div id="activationPart" style="display: none;">
+                <div>
+                    <label class="form-label" for="token">Votre token d'activation</label><br>
+                    <input class="form-control" type='mail' id='token' name="token" placeholder="Votre token d'activation"><br>
+                </div>
+
+                <button type="button" class="btn btn-primary btn-block" id="Connexionbutton">Se connecter</button>
+            </div>
+
+        </form>
+    </div>
+
+    <!-- Optional JavaScript; choose one of the two! -->
+
+    <!-- Option 1: Bootstrap Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4" crossorigin="anonymous"></script>
+
+    <!-- Option 2: Separate Popper and Bootstrap JS -->
+    <!--
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js" integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.min.js" integrity="sha384-Atwg2Pkwv9vp0ygtn1JAojH0nYbwNJLPhwyoVbhoPwBhjQPR5VtM2+xf0Uwh9KtT" crossorigin="anonymous"></script>
+    -->
+
+</body>
+
+
+<script type="text/javascript">
+    $(document).ready(
+        function() {
+
+            $("#tokenActivation").click(function() {
+                $("#activationPart").fadeIn();
+                $("#firstPart_form").hide();
+
+
+                let contratID = $("#contratID").val();
+                let mail = $("#mail").val();
+
+                $.post("http://172.20.177.52:80/connexion", {
+                    contratID: contratID,
+                    mail: mail
+                }, (err, data) => {
+
+                })
+
+            })
+
+
+            $("#Connexionbutton").click(function() {
+                $("#activationPart").fadeIn();
+                $.post("http://172.20.177.52:80/testConnection", {
+                    token: $("#token").val()
+                }, (data) => {
+
+                    if (data) {
+                        console.log(data);
+
+                        window.location.href = "http://172.20.177.52:80/application?token=" + $("#token").val();
+                        alert("TEST");
+
+                    }
+                })
+            })
+
+
+        })
+</script>
+
+
+</html>
